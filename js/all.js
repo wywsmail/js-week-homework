@@ -30,15 +30,33 @@ var app = new Vue({
     ],
   },
   methods: {
+    addProduct() {
+      var vm = this;
+      if (vm.product.id) {
+        const id = vm.product.id;
+        vm.productArray.forEach(function (item, i) {
+          if (item.id === id) {
+            vm.productArray[i] = vm.product;
+          }
+        });
+      } else {
+        const id = new Date().getTime();
+        vm.product.id = id;
+        vm.productArray.push(vm.product);
+      }
+      vm.product = {};
+      $('#productModal').modal('hide');
+    },
     // addProduct() {
     //   if (this.product.id) {
     //     const id = this.product.id;
-    //     this.productArray.forEach(function (item, i) {
+    //     this.productArray.forEach((item, i) => {
     //       if (item.id === id) {
     //         this.productArray[i] = this.product;
     //       }
     //     });
     //   } else {
+    //     // Unix Timestamp
     //     const id = new Date().getTime();
     //     this.product.id = id;
     //     this.productArray.push(this.product);
@@ -46,23 +64,6 @@ var app = new Vue({
     //   this.product = {};
     //   $('#productModal').modal('hide');
     // },
-    addProduct() {
-      if (this.product.id) {
-        const id = this.product.id;
-        this.productArray.forEach((item, i) => {
-          if (item.id === id) {
-            this.productArray[i] = this.product;
-          }
-        });
-      } else {
-        // Unix Timestamp
-        const id = new Date().getTime();
-        this.product.id = id;
-        this.productArray.push(this.product);
-      }
-      this.product = {};
-      $('#productModal').modal('hide');
-    },
     openModal(isNew, item) {
       switch (isNew) {
         case 'new':
@@ -81,10 +82,23 @@ var app = new Vue({
           break;
       }
     },
+    delProduct() {
+      var vm = this;
+      if (vm.product.id) {
+        const id = vm.product.id;
+        vm.productArray.forEach(function (item, i) {
+          if (item.id === id) {
+            vm.productArray.splice(i, 1);
+            vm.product = {};
+          }
+        });
+      }
+      $('#delProductModal').modal('hide');
+    },
     // delProduct() {
     //   if (this.product.id) {
     //     const id = this.product.id;
-    //     this.productArray.forEach(function (item, i) {
+    //     this.productArray.forEach((item, i) => {
     //       if (item.id === id) {
     //         this.productArray.splice(i, 1);
     //         this.product = {};
@@ -93,17 +107,5 @@ var app = new Vue({
     //   }
     //   $('#delProductModal').modal('hide');
     // },
-    delProduct() {
-      if (this.product.id) {
-        const id = this.product.id;
-        this.productArray.forEach((item, i) => {
-          if (item.id === id) {
-            this.productArray.splice(i, 1);
-            this.product = {};
-          }
-        });
-      }
-      $('#delProductModal').modal('hide');
-    },
   },
 });
